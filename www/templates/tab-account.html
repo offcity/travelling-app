@@ -1,0 +1,39 @@
+<ion-view>
+  <ion-content>
+    <ion-list ng-if="isLogin">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+        <img ng-src="#">
+        <h2>活动</h2>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+        <img ng-src="#">
+        <h2>游记</h2>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+        <img ng-src="#">
+        <h2>轨迹</h2>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+        <img ng-src="#">
+        <h2>相册</h2>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+      <ion-item>
+        <button class="button button-block button-positive" ng-click="logout()">登出</button>
+      </ion-item>
+    </ion-list>
+    <ion-list ng-if="!isLogin">
+      <ion-item class="item-remove-animate item-avatar item-icon-right" type="item-text-wrap">
+        <img ng-src="#">
+        <h2>介绍</h2>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+      <ion-item>
+      <button class="button button-block button-positive" ng-click="login()">登录</button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
