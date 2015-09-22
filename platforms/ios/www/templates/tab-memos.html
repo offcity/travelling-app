@@ -1,0 +1,19 @@
+<ion-view view-title="游记">
+  <ion-nav-bar class="bar-positive">
+    <ion-nav-back-button>
+    </ion-nav-back-button>
+    <ion-nav-buttons side="right">
+      <button class="button button-icon button-clear ion-search" menu-toggle="right">
+      </button>
+    </ion-nav-buttons>
+  </ion-nav-bar>
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-icon-right" ng-repeat="memo in memos" href="#/tab/memos/{{memo.id}}">
+        <div>{{memo.title}}</div>
+        <div>{{memo.username}}</div>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

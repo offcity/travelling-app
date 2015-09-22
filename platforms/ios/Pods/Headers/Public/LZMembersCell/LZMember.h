@@ -1,0 +1,1 @@
+../../../LZMembersCell/LZMembersCell/Classes/LZMember.h

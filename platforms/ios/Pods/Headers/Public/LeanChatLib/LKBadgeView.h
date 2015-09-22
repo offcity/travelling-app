@@ -1,0 +1,1 @@
+../../../../../LeanChatLib/Classes/vendor/MessageDisplayKit/Classes/Vendor/LKBadgeView/LKBadgeView.h

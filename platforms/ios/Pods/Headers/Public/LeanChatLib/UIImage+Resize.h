@@ -1,0 +1,1 @@
+../../../../../LeanChatLib/Classes/vendor/MessageDisplayKit/Classes/Categorys/UIImage/UIImage+Resize.h

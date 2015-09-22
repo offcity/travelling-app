@@ -1,0 +1,37 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-positive">
+    <h1 class="title">忘记密码</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeResetPwd()">关闭</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="doResetPwd()">
+      <div class="list">
+        <div class="row">
+          <div class="col col-70">
+            <label class="item item-input">
+              <i class="icon ion-person placeholder-icon"></i>
+              <input type="text" placeholder="输入手机号" ng-model="resetpwdData.username" required>
+            </label>
+          </div>
+          <div class="col col-30">
+            <a class="button button-positive" ng-click="getSmsCode()">获取验证码</a>
+          </div>
+        </div>
+            
+        <label class="item item-input">
+          <i class="icon ion-key placeholder-icon"></i>
+          <input type="text" placeholder="输入验证码" ng-model="resetpwdData.captcha">
+        </label>
+        <label class="item item-input">
+          <i class="icon ion-locked placeholder-icon"></i>
+          <input type="password" placeholder="输入新密码" ng-model="resetpwdData.password">
+        </label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">重置密码</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-modal-view>

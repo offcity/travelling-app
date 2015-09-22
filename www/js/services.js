@@ -57,47 +57,47 @@ angular.module('starter.services', [])
     id: 0,
     title: '最美的时光在路上',
     status: '火热报名中',
-    username: '叶子'
+    username: '叶子0'
   }, {
     id: 1,
     title: '最美的时光在路上',
     status: '火热报名中',
-    username: '叶子'
+    username: '叶子1'
   }, {
     id: 2,
     title: '最美的时光在路上',
     status: '报名已截止',
-    username: '叶子'
+    username: '叶子2'
   }, {
     id: 3,
     title: '最美的时光在路上',
     status: '报名已截止',
-    username: '叶子'
+    username: '叶子3'
   }, {
     id: 4,
     title: '最美的时光在路上',
     status: '报名已截止',
-    username: '叶子'
+    username: '叶子4'
   }, {
     id: 5,
     title: '最美的时光在路上',
     status: '报名已截止',
-    username: '叶子'
+    username: '叶子5'
   }, {
     id: 6,
     title: '最美的时光在路上',
     status: '报名已截止',
-    username: '叶子'
+    username: '叶子6'
   }, {
     id: 7,
     title: '最美的时光在路上',
     status: '报名已截止',
-    username: '叶子'
+    username: '叶子7'
   }, {
     id: 8,
     title: '最美的时光在路上',
     status: '报名已截止',
-    username: '叶子'
+    username: '叶子8'
   }];
 
   return {
@@ -131,15 +131,15 @@ angular.module('starter.services', [])
   var memos = [{
     id: 0,
     title: '最美的时光在路上',
-    username: '叶子'
+    username: '叶子0'
   }, {
     id: 1,
     title: '最美的时光在路上',
-    username: '叶子'
+    username: '叶子1'
   }, {
     id: 2,
     title: '最美的时光在路上',
-    username: '叶子'
+    username: '叶子2'
   }];
 
   return {

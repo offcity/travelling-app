@@ -1,0 +1,32 @@
+<ion-modal-view>
+  <ion-header-bar class="bar-positive">
+    <h1 class="title">登录</h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeLogin()">关闭</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <form ng-submit="doLogin()">
+      <div class="list">
+        <label class="item item-input">
+          <i class="icon ion-person placeholder-icon"></i>
+          <input type="text" placeholder="输入手机号" ng-model="loginData.username" required>
+        </label>
+        <label class="item item-input">
+          <i class="icon ion-locked placeholder-icon"></i>
+          <input type="password" placeholder="输入密码" ng-model="loginData.password" required>
+        </label>
+        <label class="item">
+          <button class="button button-block button-positive" type="submit">登录</button>
+        </label>
+        <div class="row">
+            <div class="col-50"><a class="button button-clear" ng-click="resetpwd()">忘记密码？</a></div>
+            <div class="col-50"><a class="button button-clear" ng-click="register()">快速注册</a></div>
+        </div>
+      </div>
+    </form>
+    <label class="item">
+    <a href="#" class="button button-block icon-left ion-home button button-balanced">使用微信帐号登录</a>
+    </label>
+  </ion-content>
+</ion-modal-view>

@@ -1,0 +1,1 @@
+../../../../../LeanChatLib/Classes/vendor/MessageDisplayKit/Classes/Controllers/XHBaseViewController/XHBaseViewController.h
