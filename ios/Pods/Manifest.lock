@@ -1,0 +1,99 @@
+PODS:
+  - AFNetworking (2.5.4):
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
+  - AFNetworking/NSURLConnection (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.4)
+  - AFNetworking/Security (2.5.4)
+  - AFNetworking/Serialization (2.5.4)
+  - AFNetworking/UIKit (2.5.4):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - AVOSCloud (3.1.4)
+  - AVOSCloudIM (3.1.4):
+    - AVOSCloud
+  - DateTools (1.5.0)
+  - FMDB (2.5):
+    - FMDB/standard (= 2.5)
+  - FMDB/common (2.5)
+  - FMDB/standard (2.5):
+    - FMDB/common
+  - FXForms (1.2.13)
+  - iRate (1.11.4)
+  - iVersion (1.11.4)
+  - JSBadgeView (1.4.1)
+  - LeanChatLib (0.2.6):
+    - AVOSCloud (~> 3.1.4)
+    - AVOSCloudIM (~> 3.1.4)
+    - DateTools (= 1.5.0)
+    - FMDB (= 2.5)
+    - JSBadgeView (= 1.4.1)
+  - LeanCloudFeedback (0.0.7):
+    - AVOSCloud (~> 3.1)
+  - LeanCloudSocial (0.0.5):
+    - AFNetworking (~> 2.0)
+    - AVOSCloud (~> 3.1)
+  - LZAlertViewHelper (0.0.2)
+  - LZMembersCell (0.0.2)
+  - MBProgressHUD (0.9.1)
+  - OpenShare (0.0.1)
+  - pop (1.0.8)
+  - PopMenu (2.4):
+    - pop
+    - XHRealTimeBlur
+  - XHRealTimeBlur (1.7)
+
+DEPENDENCIES:
+  - AFNetworking (= 2.5.4)
+  - AVOSCloud (= 3.1.4)
+  - AVOSCloudIM (= 3.1.4)
+  - FXForms (= 1.2.13)
+  - iRate (= 1.11.4)
+  - iVersion (= 1.11.4)
+  - JSBadgeView (= 1.4.1)
+  - LeanChatLib (from `../`)
+  - LeanCloudFeedback (= 0.0.7)
+  - LeanCloudSocial (= 0.0.5)
+  - LZAlertViewHelper (= 0.0.2)
+  - LZMembersCell (= 0.0.2)
+  - MBProgressHUD (= 0.9.1)
+  - OpenShare (= 0.0.1)
+  - PopMenu (= 2.4)
+
+EXTERNAL SOURCES:
+  LeanChatLib:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  AVOSCloud: 2be1640178facaac8343d67ed4d5348f4dffecd7
+  AVOSCloudIM: e2934a3128b018eeb5c9d923822ab287315b0b7f
+  DateTools: b93a2c2017747329c6077c7d7e8a75106e23d0d7
+  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
+  FXForms: 22d5ceafd8ca44d2f2be4827afcf00aaf80184a5
+  iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
+  iVersion: 2b6ffe708672cb494ba3cab150a94800c2892e81
+  JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
+  LeanChatLib: 6984334d21a708f8d74b1cd63ed2a7c87aed43c7
+  LeanCloudFeedback: 35d2effa89e03e9a3ce2158874a6f127751f7257
+  LeanCloudSocial: a142862a9d8968785186ba640e577adb323a5854
+  LZAlertViewHelper: 9f304f25506f3e8582ab17184502543412b82a03
+  LZMembersCell: d7784a5fdd6d5b0b255efe2ff962930c5bf177a0
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  OpenShare: a560580dbb729d5c0c3cc1ee84cd6aa4a07e94c6
+  pop: bb773ae2c791ca2629de13b347e7a8b450fa6a57
+  PopMenu: 26b97baeaf250070f4f61b93727ca86d127d7bc5
+  XHRealTimeBlur: 661fadd5691ba2d349758e8fd5fbdb499ac55f8c
+
+COCOAPODS: 0.38.2

@@ -1,0 +1,27 @@
+PODS:
+  - AVOSCloud (3.1.4)
+  - AVOSCloudIM (3.1.4):
+    - AVOSCloud
+  - DateTools (1.5.0)
+  - FMDB (2.5):
+    - FMDB/standard (= 2.5)
+  - FMDB/common (2.5)
+  - FMDB/standard (2.5):
+    - FMDB/common
+  - JSBadgeView (1.4.1)
+
+DEPENDENCIES:
+  - AVOSCloud (~> 3.1.4)
+  - AVOSCloudIM (~> 3.1.4)
+  - DateTools (= 1.5.0)
+  - FMDB (= 2.5)
+  - JSBadgeView (= 1.4.1)
+
+SPEC CHECKSUMS:
+  AVOSCloud: 2be1640178facaac8343d67ed4d5348f4dffecd7
+  AVOSCloudIM: e2934a3128b018eeb5c9d923822ab287315b0b7f
+  DateTools: b93a2c2017747329c6077c7d7e8a75106e23d0d7
+  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
+  JSBadgeView: 3861ddee41094284d9468e6d0af5107f703aaac5
+
+COCOAPODS: 0.38.2
