@@ -9,8 +9,22 @@ var {
 module.exports = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    backgroundColor: '#efefef',
-    marginTop: 30,
+    backgroundColor: 'white',
+  },
+
+  headerContainer: {
+    height: 44,
+    backgroundColor: '#0087fa',
+    alignItems: 'center',
+    justifyContent: 'center',
+    tintColor: 'white',
+    flexDirection: 'row',
+  },
+
+  header: {
+    tintColor: 'white',
+    color: 'white',
+    fontSize: 20,
   },
 
   text: {
@@ -27,6 +41,6 @@ module.exports = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    flex: 1
+    flex: 1,
   }
 });

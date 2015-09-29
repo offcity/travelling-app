@@ -1,7 +1,7 @@
 'use strict';
 
 var React = require('react-native');
-var nextPage = require('./nextPage');
+var NextPage = require('./NextPage');
 var {
   AppRegistry,
   StyleSheet,
@@ -25,20 +25,30 @@ var Hello = React.createClass({
 		};
 	},
 
+  renderHeader: function(title) {
+    return (
+      <View style={style.headerContainer}>
+        <Text style={style.header}>{title}</Text>
+      </View>
+    )
+  },
+
 	render: function() {
         return (
+          <View>
+          {this.renderHeader('朋友')}
           <ListView
             dataSource={this.state.dataSource}
             renderRow={this.renderList}
             style={styles1.listView}/>
+          </View>
         );
       },
       onTouch:function(data){
-        this.props.navRef.push({
-          title: data,
-          component: nextPage,
-          passProps: {title: 'data',
-                  content: data,}
+        this.props.navigator.push({
+          name: 'NextPage',
+          index: 1,
+          passProps: 'test',
         });
       },
       renderList: function(data) {
@@ -53,13 +63,14 @@ var Hello = React.createClass({
 
 });
 
+var style = require("./style");
+
 var styles1 = StyleSheet.create({
       container: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
         height:100,
         borderBottomWidth:0.5,
       },
@@ -68,7 +79,6 @@ var styles1 = StyleSheet.create({
         textAlign: 'center',
       },
       listView: {
-        backgroundColor: '#F5FCFF',
       },
     });
 

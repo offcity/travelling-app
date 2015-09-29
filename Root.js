@@ -2,7 +2,24 @@
 
 var React = require('react-native');
 var Hello = require('./Hello');
-var nextPage = require('./nextPage');
+var NextPage = require('./NextPage');
+
+
+var request = new XMLHttpRequest();
+request.onreadystatechange = (e) => {
+  if (request.readyState !== 4) {
+    return;
+  }
+
+  if (request.status === 200) {
+    console.log('success', request.responseText);
+  } else {
+    console.warn('error');
+  }
+};
+
+request.open('GET', 'http://smartemple.com');
+request.send();
 
 var {
   AppRegistry,
@@ -16,7 +33,6 @@ var {
   View,
   LayoutAnimation,
   TouchableOpacity,
-  NavigatorIOS,
   ListView,
   TouchableHighlight,
   Navigator,
@@ -87,14 +103,76 @@ var base64Icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAQAAACS
 var Home = React.createClass({
     render: function() {
       return (
-          <NavigatorIOS
+          <Navigator
+          ref="navigator"
         style={style.container}
         initialRoute={{
-          component: Root,
-          title: '城外'
-        }}/>
+          index: 0,
+          name: 'Root',
+          passProps: {title: 'test',},
+        }}
+        renderScene={this.renderScene}
+        configureScene={(route) => Navigator.SceneConfigs.HorizontalSwipeJump}/>
+
       );
     },
+    renderScene: function(route, navigator) {
+      if(route.name == 'Root')
+        return <Root
+            navigator={navigator}
+            name={route.name}
+            onForward={() => {
+              var nextIndex = route.index + 1;
+              navigator.push({
+                name: 'Scene ' + nextIndex,
+                index: nextIndex,
+                 passProps: {title: 'test',},
+              });
+            }}
+            onBack={() => {
+              if (route.index > 0) {
+                navigator.pop();
+              }
+            }}/>
+      if(route.name == 'NextPage')
+        return <NextPage
+             navigator={navigator}
+            name={route.name}
+            onForward={() => {
+              var nextIndex = route.index + 1;
+              navigator.push({
+                name: 'Scene ' + nextIndex,
+                index: nextIndex,
+                passProps: {title: 'test',},
+              });
+            }}
+            onBack={() => {
+              if (route.index > 0) {
+                navigator.pop();
+              }
+            }}/>
+    },
+});
+
+var SliderExample = React.createClass({
+  getInitialState() {
+    return {
+      value: 0,
+    };
+  },
+
+  render() {
+    return (
+      <View style={style.rootContainer}>
+        <Text style={styles.text} >
+          {this.state.value}
+        </Text>
+        <SliderIOS
+          style={styles.slider}
+          onValueChange={(value) => this.setState({value: value})} />
+      </View>
+    );
+  }
 });
 
 var Root = React.createClass({
@@ -164,6 +242,7 @@ var Root = React.createClass({
   _renderContent: function(color: string, pageText: string, num?: number) {
     return (
       <View style={[style.rootContainer, {backgroundColor: color}]}>
+      {this.renderHeader(pageText)}
         <Text style={style.text}>{pageText}</Text>
         <Text style={style.text}>{num} re-renders of the {pageText}</Text>
         <Button onClick={this.gotoIM}>IM</Button>
@@ -173,10 +252,9 @@ var Root = React.createClass({
 
   onTouch:function(data){
     this.props.navigator.push({
-      title: data,
-      component: nextPage,
-      passProps: {title: 'data',
-              content: data,}
+      name: 'NextPage',
+      index: 1,
+      passProps: {title: 'test',},
     });
   },
 
@@ -228,13 +306,13 @@ var Root = React.createClass({
   },
 
   render: function() {
-    if (!this.state.loaded) {
-      return this.renderLoadingView();
-    }
+    // if (!this.state.loaded) {
+    //   return this.renderLoadingView();
+    // }
     return (
       <TabBarIOS
-        tintColor="white"
-        barTintColor="darkslateblue">
+        tintColor="#0087fa"
+        barTintColor="#efefef">
         <TabBarIOS.Item
           title="活动"
           icon={{uri: base64Icon, scale: 3}}
@@ -245,6 +323,7 @@ var Root = React.createClass({
             });
           }}>
           {
+
             <View style={style.rootContainer}>
             {this.renderHeader('活动')}
             <ListView
@@ -266,7 +345,7 @@ var Root = React.createClass({
               notifCount: this.state.notifCount + 1,
             });
           }}>
-          {this._renderContent('#783E33', 'Red Tab', this.state.notifCount)}
+          {this._renderContent('white', 'Red Tab', this.state.notifCount)}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="朋友"
@@ -278,7 +357,7 @@ var Root = React.createClass({
             });
           }}>
           {
-            <Hello />
+            <Hello navigator={this.props.navigator}/>
             
             // <NavigatorIOS
             // style={style.container}
@@ -298,7 +377,7 @@ var Root = React.createClass({
               presses: this.state.presses + 1
             });
           }}>
-          {this._renderContent('#cccccc', 'Green Tab', this.state.presses)}
+          {this._renderContent('white', 'Green Tab', this.state.presses)}
         </TabBarIOS.Item>
       </TabBarIOS>
     );
@@ -308,6 +387,19 @@ var Root = React.createClass({
 var style = require("./style");
 
 var styleListView = require("./styleListView");
+
+var styles = StyleSheet.create({
+  slider: {
+    height: 10,
+    margin: 10,
+  },
+  text: {
+    fontSize: 14,
+    textAlign: 'center',
+    fontWeight: '500',
+    margin: 10,
+  },
+});
 
 
 AppRegistry.registerComponent('AwesomeProject', () => Home);

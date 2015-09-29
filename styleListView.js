@@ -20,6 +20,6 @@ module.exports = StyleSheet.create({
         textAlign: 'center',
       },
       listView: {
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#white',
       },
 });
