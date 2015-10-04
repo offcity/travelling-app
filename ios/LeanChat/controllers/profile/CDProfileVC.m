@@ -22,6 +22,9 @@
 #import "CDProfileNameVC.h"
 #import "LZPushManager.h"
 
+#import "ReactViewWrapper.h"
+#import "AppDelegate.h"
+
 @interface CDProfileVC ()<UIActionSheetDelegate, CDProfileNameVCDelegate>
 
 @property (nonatomic, strong) MCPhotographyHelper *photographyHelper;
@@ -134,8 +137,16 @@
         DLog(@"%@", error);
         [self deleteAuthDataCache];
         [AVUser logOut];
-        CDAppDelegate *delegate = (CDAppDelegate *)[UIApplication sharedApplication].delegate;
+        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         [delegate toLogin];
+      //[delegate toMain];
+      //to react native
+//      UINavigationController *rootViewController = [[UINavigationController alloc] init];
+//      ReactViewWrapper *reactViewWrapper = [[ReactViewWrapper alloc] init];
+//      [rootViewController pushViewController:reactViewWrapper animated:true];
+//      rootViewController.navigationBarHidden = true;
+//      delegate.window.rootViewController = rootViewController;
+//      [delegate.window makeKeyAndVisible];
     }];
 }
 

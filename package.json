@@ -7,6 +7,11 @@
   },
   "dependencies": {
     "avoscloud-sdk": "^0.6.1",
-    "react-native": "^0.11.0"
+    "react-native": "^0.11.0",
+    "react-native-icons": "^0.4.0",
+    "react-native-image-picker": "^0.7.1",
+    "react-native-refreshable-listview": "node_modules/react-native-refreshable-listview",
+    "react-native-refresher": "^0.1.1",
+    "react-native-vector-icons": "^0.7.1"
   }
 }

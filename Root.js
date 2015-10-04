@@ -2,24 +2,17 @@
 
 var React = require('react-native');
 var Hello = require('./Hello');
+var Activity = require('./Activity');
+var ModalExample = require('./ModalExample');
 var NextPage = require('./NextPage');
+var AddActivity = require('./AddActivity');
+var MyPage = require('./MyPage');
+var Icon = require('react-native-vector-icons/Ionicons');
+var {
+  RefresherListView,
+  LoadingBarIndicator
+} = require('react-native-refresher');
 
-
-var request = new XMLHttpRequest();
-request.onreadystatechange = (e) => {
-  if (request.readyState !== 4) {
-    return;
-  }
-
-  if (request.status === 200) {
-    console.log('success', request.responseText);
-  } else {
-    console.warn('error');
-  }
-};
-
-request.open('GET', 'http://smartemple.com');
-request.send();
 
 var {
   AppRegistry,
@@ -30,7 +23,10 @@ var {
   CameraRoll,
   SliderIOS,
   SwitchIOS,
+  AlertIOS,
+  Modal,
   View,
+  Component,
   LayoutAnimation,
   TouchableOpacity,
   ListView,
@@ -54,46 +50,11 @@ var Button = React.createClass({
     render: function() {
         return (
             <View style={style.container}>
-                <TouchableHighlight onPress={this.handlePress}>
+                <TouchableHighlight onPress={this.handlePress} underlayColor="#a9d9d4">
                     <Text style={style.button}>{this.props.children}</Text>
                 </TouchableHighlight>
             </View>
         );
-    }
-});
-
-var LaunchView = React.createClass({
-    gotoOther: function() {
-        var index = 1;
-        this.props.navigator.push({name: "Scene#" + index, index: index});
-    },
-
-    gotoIM: function() {
-        console.log('goto IM');
-        SpringBoard.gotoIM(function() {
-            console.log('goto IM', 'done!');
-        });
-    },
-
-    render: function() {
-        return (
-            <View style={style.container}>
-                <View style={style.row}>
-                    <Button onClick={this.gotoOther}>Other</Button>
-                    <Button onClick={this.gotoIM}>IM</Button>
-                </View>
-            </View>
-        );   
-    }
-});
-
-var IMView = React.createClass({
-    render: function() {
-        return (
-            <View style={style.container}>
-                <Text style={style.welcome}>IM View</Text>
-            </View>
-        );   
     }
 });
 
@@ -109,7 +70,7 @@ var Home = React.createClass({
         initialRoute={{
           index: 0,
           name: 'Root',
-          passProps: {title: 'test',},
+          component: Root,
         }}
         renderScene={this.renderScene}
         configureScene={(route) => Navigator.SceneConfigs.HorizontalSwipeJump}/>
@@ -117,62 +78,12 @@ var Home = React.createClass({
       );
     },
     renderScene: function(route, navigator) {
-      if(route.name == 'Root')
-        return <Root
-            navigator={navigator}
-            name={route.name}
-            onForward={() => {
-              var nextIndex = route.index + 1;
-              navigator.push({
-                name: 'Scene ' + nextIndex,
-                index: nextIndex,
-                 passProps: {title: 'test',},
-              });
-            }}
-            onBack={() => {
-              if (route.index > 0) {
-                navigator.pop();
-              }
-            }}/>
-      if(route.name == 'NextPage')
-        return <NextPage
-             navigator={navigator}
-            name={route.name}
-            onForward={() => {
-              var nextIndex = route.index + 1;
-              navigator.push({
-                name: 'Scene ' + nextIndex,
-                index: nextIndex,
-                passProps: {title: 'test',},
-              });
-            }}
-            onBack={() => {
-              if (route.index > 0) {
-                navigator.pop();
-              }
-            }}/>
+      var Component = route.component;
+      return <Component
+          navigator={navigator}
+          route={route}
+          name={route.name} />
     },
-});
-
-var SliderExample = React.createClass({
-  getInitialState() {
-    return {
-      value: 0,
-    };
-  },
-
-  render() {
-    return (
-      <View style={style.rootContainer}>
-        <Text style={styles.text} >
-          {this.state.value}
-        </Text>
-        <SliderIOS
-          style={styles.slider}
-          onValueChange={(value) => this.setState({value: value})} />
-      </View>
-    );
-  }
 });
 
 var Root = React.createClass({
@@ -185,13 +96,15 @@ var Root = React.createClass({
 
   getInitialState: function() {
     return {
-      selectedTab: 'redTab',
+      selectedTab: 'blueTab',
       notifCount: 0,
       presses: 0,
       dataSource: new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2,
       }),
       loaded: false,
+      tabIconSize: 34,
+      modalVisible: true,
     };
   },
 
@@ -200,15 +113,25 @@ var Root = React.createClass({
   },
 
   fetchData: function() {
-    fetch(REQUEST_URL)
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
-          loaded: true,
+    fetch("https://api.leancloud.cn/1.1/classes/Activity", {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-LC-Id': 'vGdoWipkgLukG49FCz6beS1D',
+                'X-LC-Key': '5LubapRJJIphAkmklcQw8zx2',
+            }
+        }).then(function(response) {
+            var data = JSON.parse(response._bodyInit);
+
+            var dataSource = this.state.dataSource.cloneWithRows(data.results);
+            //console.error(dataSource);
+            this.setState({
+                dataSource: dataSource,
+                loaded: true,
+            });
+            //console.error("123");
+        }.bind(this), function() {
+            console.error("fail");
         });
-      })
-      .done();
   },
 
   renderLoadingView: function() {
@@ -217,17 +140,6 @@ var Root = React.createClass({
         <Text>
           Loading movies...
         </Text>
-      </View>
-    );
-  },
-
-  renderImages: function() {
-    return (
-      <View>
-        <Image
-          style={style.logo}
-          source={{uri: "http:///facebook.github.io/react/img/logo_og.png"}}
-        />
       </View>
     );
   },
@@ -254,47 +166,38 @@ var Root = React.createClass({
     this.props.navigator.push({
       name: 'NextPage',
       index: 1,
-      passProps: {title: 'test',},
+      id: data.id,
+      title: data.title,
+      content: data.content,
+      component: NextPage,
     });
   },
 
-  renderMovie: function(movie) {
+  doModal:function() {
+    this.props.navigator.push({
+      name: 'AddActivity',
+      index: 1,
+      id: 1,
+      component: AddActivity,
+    });
+  },
+
+  renderMovie: function(data) {
     return (
-      <TouchableHighlight onPress={() => {this.onTouch(movie.title)}}>
+      <TouchableHighlight onPress={() => {this.onTouch(data)}} underlayColor="#efefef">
       <View style={styleListView.container}>
-      <View style={styleListView.rightContainer}>
-        <Image
-          source={{uri: movie.posters.thumbnail}}
-          style={styleListView.thumbnail}
-        />
-        </View>
         <View style={styleListView.rightContainer}>
-          <Text style={styleListView.title}>{movie.title}</Text>
-          <Text style={styleListView.year}>{movie.year}</Text>
+          <Text style={styleListView.title}>{data.title}</Text>
+          <Text style={styleListView.content}>{data.content}</Text>
         </View>
       </View>
       </TouchableHighlight>
     );
   },
 
-  renderFriendList: function(movie) {
-    return (
-      <TouchableHighlight onPress={this.onTouch(movie.year)}>
-      <View style={style.container}>
-      <View style={style.rightContainer}>
-        <Image
-          source={{uri: movie.posters.thumbnail}}
-          style={style.thumbnail}
-        />
-        </View>
-        <View style={style.rightContainer}>
-          <Text style={style.title}>{movie.title}</Text>
-          <Text style={style.year}>{movie.year}</Text>
-          <Button onClick={this.renderImages}>ImageYo</Button>
-        </View>
-      </View>
-      </TouchableHighlight>
-    );
+  onRefresh: function() {
+    // You can either return a promise or a callback
+    this.fetchData();
   },
 
   renderHeader: function(title) {
@@ -309,13 +212,21 @@ var Root = React.createClass({
     // if (!this.state.loaded) {
     //   return this.renderLoadingView();
     // }
+    var modalBackgroundStyle = {
+      backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
+    };
+    var innerContainerTransparentStyle = this.state.transparent
+      ? {backgroundColor: '#fff', padding: 20}
+      : null;
     return (
       <TabBarIOS
         tintColor="#0087fa"
         barTintColor="#efefef">
-        <TabBarIOS.Item
+        <Icon.TabBarItem
           title="活动"
-          icon={{uri: base64Icon, scale: 3}}
+          iconName="ios-flag-outline"
+          iconSize={this.state.tabIconSize}
+          selectedIconName="ios-flag"
           selected={this.state.selectedTab === 'blueTab'}
           onPress={() => {
             this.setState({
@@ -323,20 +234,62 @@ var Root = React.createClass({
             });
           }}>
           {
-
-            <View style={style.rootContainer}>
-            {this.renderHeader('活动')}
-            <ListView
-              dataSource={this.state.dataSource}
-              renderRow={this.renderMovie}
-              style={style.listView}
-            />
-            </View>
+            // <View style={style.rootContainer}>
+            // {this.renderHeader('活动')}
+            // <RefresherListView
+            //   dataSource={this.state.dataSource}
+            //   renderRow={this.renderMovie}
+            //   onRefresh={this.onRefresh}
+            //   minTime={50}
+            //   style={style.listView}/>
+            // </View>
+            <Activity navigator={this.props.navigator}/>
           }
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
+        </Icon.TabBarItem>
+
+        <Icon.TabBarItem
           title="游记"
-          icon={{uri: base64Icon, scale: 3}}
+          iconName="ios-bookmarks-outline"
+          iconSize={this.state.tabIconSize}
+          selectedIconName="ios-bookmarks"
+          selected={this.state.selectedTab === 'friendTab'}
+          onPress={() => {
+            this.setState({
+              selectedTab: 'friendTab',
+            });
+          }}>
+          {
+            <Hello navigator={this.props.navigator}/>
+          }
+        </Icon.TabBarItem>
+
+        <Icon.TabBarItem
+          title="添加"
+          iconName="ios-plus"
+          iconSize={this.state.tabIconSize}
+          selectedIconName="ios-plus"
+          selected={this.state.selectedTab === 'PlusTab'}
+          onPress={() => {
+            this.doModal()
+            // AlertIOS.alert(
+            //   'Foo Title',
+            //   null,
+            //   [
+            //     {text: 'Foo', onPress: () => console.log('Foo Pressed!')},
+            //     {text: 'Bar', onPress: () => console.log('Bar Pressed!')},
+            //     {text: 'Baz', onPress: () => console.log('Baz Pressed!')},
+            //   ]
+            // )
+          }} >
+          {
+            // <ModalExample navigator={this.props.navigator}/>
+          }
+        </Icon.TabBarItem>
+        <Icon.TabBarItem
+          title="朋友"
+          iconName="ios-chatboxes-outline"
+          iconSize={this.state.tabIconSize}
+          selectedIconName="ios-chatboxes"
           badge={this.state.notifCount > 0 ? this.state.notifCount : undefined}
           selected={this.state.selectedTab === 'redTab'}
           onPress={() => {
@@ -346,39 +299,23 @@ var Root = React.createClass({
             });
           }}>
           {this._renderContent('white', 'Red Tab', this.state.notifCount)}
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          title="朋友"
-          icon={{uri: base64Icon, scale: 3}}
-          selected={this.state.selectedTab === 'friendTab'}
+        </Icon.TabBarItem>
+        
+        <Icon.TabBarItem
+          title="我的"
+          iconName="ios-person-outline"
+          iconSize={this.state.tabIconSize}
+          selectedIconName="ios-person"
+          selected={this.state.selectedTab === 'MyTab'}
           onPress={() => {
             this.setState({
-              selectedTab: 'friendTab',
+              selectedTab: 'MyTab',
             });
           }}>
           {
-            <Hello navigator={this.props.navigator}/>
-            
-            // <NavigatorIOS
-            // style={style.container}
-            // initialRoute={{
-            //   component: Hello,
-            //   title: '朋友'
-            // }}/>
+            <MyPage navigator={this.props.navigator}/>
           }
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          icon={{uri: base64Icon, scale: 3}}
-          title="我的"
-          selected={this.state.selectedTab === 'greenTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'greenTab',
-              presses: this.state.presses + 1
-            });
-          }}>
-          {this._renderContent('white', 'Green Tab', this.state.presses)}
-        </TabBarIOS.Item>
+        </Icon.TabBarItem>
       </TabBarIOS>
     );
   },
@@ -389,6 +326,15 @@ var style = require("./style");
 var styleListView = require("./styleListView");
 
 var styles = StyleSheet.create({
+  icon: {
+    fontSize: 20,
+    color: 'white',
+    paddingVertical: 5,
+    paddingHorizontal: 8,
+    borderRadius: 4,
+    backgroundColor: '#3b5998',
+  },
+
   slider: {
     height: 10,
     margin: 10,

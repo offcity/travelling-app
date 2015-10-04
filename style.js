@@ -13,16 +13,15 @@ module.exports = StyleSheet.create({
   },
 
   headerContainer: {
-    height: 44,
+    paddingTop: 20,
+    height: 64,
     backgroundColor: '#0087fa',
     alignItems: 'center',
     justifyContent: 'center',
-    tintColor: 'white',
     flexDirection: 'row',
   },
 
   header: {
-    tintColor: 'white',
     color: 'white',
     fontSize: 20,
   },

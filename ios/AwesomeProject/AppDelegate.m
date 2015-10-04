@@ -34,6 +34,11 @@
 #import <LeanCloudSocial/AVOSCloudSNS.h>
 #import <OpenShare/OpenShareHeader.h>
 
+@interface AppDelegate()
+
+@property (nonatomic, strong) CDLoginVC *loginVC;
+
+@end
 
 @implementation AppDelegate
 
@@ -62,7 +67,6 @@
   }
   [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                                           [UIColor whiteColor], NSForegroundColorAttributeName, [UIFont boldSystemFontOfSize:17], NSFontAttributeName, nil]];
-  self.window.backgroundColor = [UIColor whiteColor];
 
 
 //  NSURL *jsCodeLocation;
@@ -100,12 +104,24 @@
 //                                               initialProperties:nil
 //                                                   launchOptions:launchOptions];
 
-  UINavigationController *rootViewController = [[UINavigationController alloc] init];
-  ReactViewWrapper *reactViewWrapper = [[ReactViewWrapper alloc] init];
-  [rootViewController pushViewController:reactViewWrapper animated:true];
-  rootViewController.navigationBarHidden = true;
-  self.window.rootViewController = rootViewController;
+//  UINavigationController *rootViewController = [[UINavigationController alloc] init];
+//  ReactViewWrapper *reactViewWrapper = [[ReactViewWrapper alloc] init];
+//  [rootViewController pushViewController:reactViewWrapper animated:true];
+//  rootViewController.navigationBarHidden = true;
+//  self.window.rootViewController = rootViewController;
+//  [self.window makeKeyAndVisible];
+  
+  UIPageControl *pageControl = [UIPageControl appearance];
+  pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
+  pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
+  pageControl.backgroundColor = [UIColor blackColor];
+  
+  UIStoryboard * storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+  self.window.rootViewController = [storyBoard instantiateInitialViewController];
+  
+  self.window.backgroundColor = [UIColor blackColor];
   [self.window makeKeyAndVisible];
+
 
   [[LZPushManager manager] registerForRemoteNotification];
 
@@ -150,6 +166,11 @@
     UINavigationController *controller = (UINavigationController*) weakSelf.window.rootViewController;
     [controller setViewControllers:@[tab]];
   }];
+}
+
+- (void)toLogin {
+  self.loginVC = [[CDLoginVC alloc] init];
+  self.window.rootViewController = self.loginVC;
 }
 
 @end

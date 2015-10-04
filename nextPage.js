@@ -17,7 +17,7 @@ var Button = React.createClass({
     render: function() {
         return (
             <View style={styles.container}>
-                <TouchableHighlight onPress={this.handlePress}>
+                <TouchableHighlight onPress={this.handlePress} underlayColor="#1965d8">
                     <Text style={styles.button}>{this.props.children}</Text>
                 </TouchableHighlight>
             </View>
@@ -46,14 +46,25 @@ var NextPage = React.createClass({
       {this.renderHeader('详情')}
         <View>
           <Text style={styles.description}>
-            {this.props.name}
+            传递过来的参数
           </Text>
-          <Button onClick={this.onBack}>back</Button>
+          <Image
+            style={styles.logo}
+            source={{uri: 'http://facebook.github.io/react/img/logo_og.png'}}/>
           <Text style={styles.description}>
-            {this.props.title}
+            route: {this.props.route}
           </Text>
           <Text style={styles.description}>
-            {this.props.content}
+            id: {this.props.route.id}
+          </Text>
+          <Text style={styles.description}>
+            title: {this.props.route.title}
+          </Text>
+          <Text style={styles.description}>
+            content: {this.props.route.content}
+          </Text>
+          <Text style={styles.description}>
+            name: {this.props.route.name}
           </Text>
         </View>
       </View>
@@ -64,6 +75,11 @@ var NextPage = React.createClass({
 var styleHeader = require("./style");
 
 var styles = StyleSheet.create({
+
+  logo: {
+    width: 200,
+    height: 100,
+  },
 
   description: {
     marginBottom: 20,

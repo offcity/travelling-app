@@ -14,5 +14,6 @@
 @property (nonatomic, strong) UIWindow *window;
 
 - (void)toMain;
+- (void)toLogin;
 
 @end

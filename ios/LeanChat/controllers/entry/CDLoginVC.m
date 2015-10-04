@@ -19,6 +19,7 @@
 #import "CDSNSView.h"
 #import "CDUserManager.h"
 #import "CDPhoneRegisterVC.h"
+#import "ReactViewWrapper.h"
 
 @interface CDLoginVC () <CDSNSViewDelegate, UIActionSheetDelegate>
 
@@ -132,11 +133,26 @@
             [self showHUDText:error.localizedDescription];
         }
         else {
+          
+            [self.usernameField resignFirstResponder];
+            [self.passwordField resignFirstResponder];
             [[NSUserDefaults standardUserDefaults] setObject:self.usernameField.text forKey:KEY_USERNAME];
             CDAppDelegate *delegate = (CDAppDelegate *)[UIApplication sharedApplication].delegate;
-            [delegate toMain];
+            //[delegate toMain];
+            UINavigationController *rootViewController = [[UINavigationController alloc] init];
+            ReactViewWrapper *reactViewWrapper = [[ReactViewWrapper alloc] init];
+            [rootViewController pushViewController:reactViewWrapper animated:true];
+            rootViewController.navigationBarHidden = true;
+            delegate.window.rootViewController = rootViewController;
+            [delegate.window makeKeyAndVisible];
         }
     }];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.usernameField resignFirstResponder];
+    [self.passwordField resignFirstResponder];
 }
 
 - (void)toRegister:(id)sender {
