@@ -73,7 +73,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   LeanChatLib:
-    :path: "../"
+    :path: ../
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
@@ -96,4 +96,4 @@ SPEC CHECKSUMS:
   PopMenu: 26b97baeaf250070f4f61b93727ca86d127d7bc5
   XHRealTimeBlur: 661fadd5691ba2d349758e8fd5fbdb499ac55f8c
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.39.0

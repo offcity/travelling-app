@@ -15,5 +15,6 @@
 
 - (void)toMain;
 - (void)toLogin;
+- (void)stepin;
 
 @end

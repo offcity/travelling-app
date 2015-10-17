@@ -1,1 +1,0 @@
-../../../../../LeanChatLib/Classes/vendor/MessageDisplayKit/Classes/Common/XHPhotographyHelper.h

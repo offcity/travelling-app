@@ -6,7 +6,10 @@
 //  Copyright © 2015年 limijiaoyin. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "PageContentViewController.h"
+#import "RCTRootView.h"
+#import "ReactViewWrapper.h"
 
 @interface PageContentViewController ()
 
@@ -23,9 +26,10 @@
     self.stepinBtn.hidden = self.isBtnHidden;
     [self.stepinBtn.layer setMasksToBounds:YES];
     self.stepinBtn.layer.cornerRadius = 10.0;
-    self.stepinBtn.layer.borderWidth = 2.0f;
+    self.stepinBtn.layer.borderWidth = 1.0f;
     self.stepinBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-    
+  [self.stepinBtn addTarget:self action:@selector(handleStepin:) forControlEvents:UIControlEventTouchUpInside];
+  
     //动画效果
     CABasicAnimation *theAnimation;
     //theAnimation=[CABasicAnimation animationWithKeyPath:@"transform.translation.x"];
@@ -67,5 +71,10 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+- (IBAction)handleStepin:(id)sender {
+  AppDelegate *delegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+  [delegate stepin];
+}
 
 @end

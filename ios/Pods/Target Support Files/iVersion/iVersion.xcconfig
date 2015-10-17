@@ -1,1 +1,0 @@
-IVERSION_OTHER_LDFLAGS = -framework "StoreKit"
