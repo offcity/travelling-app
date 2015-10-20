@@ -9,7 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#import "RCTRootView.h"
+
 
 @interface ReactViewWrapper : UIViewController
+
+@property RCTRootView *rctView;
 
 @end

@@ -68,9 +68,12 @@
   [[UINavigationBar appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:
                                                           [UIColor whiteColor], NSForegroundColorAttributeName, [UIFont boldSystemFontOfSize:17], NSFontAttributeName, nil]];
 
+  UINavigationController *rootViewController = [[UINavigationController alloc] init];
+  rootViewController.navigationBarHidden = true;
+  self.window.rootViewController = rootViewController;
 
-//  NSURL *jsCodeLocation;
-
+  NSURL *jsCodeLocation;
+  
   /**
    * Loading JavaScript code - uncomment the one you want.
    *
@@ -84,9 +87,9 @@
    * `inet` value under `en0:`) and make sure your computer and iOS device are
    * on the same Wi-Fi network.
    */
-
-//  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle"];
-
+  
+  //jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle"];
+  
   /**
    * OPTION 2
    * Load from pre-bundled file on disk. To re-generate the static bundle
@@ -96,30 +99,18 @@
    *
    * see http://facebook.github.io/react-native/docs/runningondevice.html
    */
-
-//   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-//
-//   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-//                                                      moduleName:@"AwesomeProject"
-//                                               initialProperties:nil
-//                                                   launchOptions:launchOptions];
-
-//  UINavigationController *rootViewController = [[UINavigationController alloc] init];
-//  ReactViewWrapper *reactViewWrapper = [[ReactViewWrapper alloc] init];
-//  [rootViewController pushViewController:reactViewWrapper animated:true];
-//  rootViewController.navigationBarHidden = true;
-//  self.window.rootViewController = rootViewController;
-//  [self.window makeKeyAndVisible];
   
-  UIPageControl *pageControl = [UIPageControl appearance];
-  pageControl.pageIndicatorTintColor = [UIColor lightGrayColor];
-  pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
-  pageControl.backgroundColor = [UIColor blackColor];
+  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
   
-  UIStoryboard * storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-  self.window.rootViewController = [storyBoard instantiateInitialViewController];
+  RCTRootView *rctView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+                                                      moduleName:@"AwesomeProject"
+                                               initialProperties:nil
+                                                   launchOptions:launchOptions];
   
-  self.window.backgroundColor = [UIColor blackColor];
+  
+  ReactViewWrapper *reactViewWrapper = [[ReactViewWrapper alloc] init];
+  reactViewWrapper.rctView = rctView;
+  [rootViewController pushViewController:reactViewWrapper animated:true];
   [self.window makeKeyAndVisible];
 
 
@@ -171,6 +162,10 @@
 - (void)toLogin {
   self.loginVC = [[CDLoginVC alloc] init];
   self.window.rootViewController = self.loginVC;
+}
+
+- (void)stepin {
+
 }
 
 @end

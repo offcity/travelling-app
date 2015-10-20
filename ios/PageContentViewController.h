@@ -19,4 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIButton *stepinBtn;
 
+
+-(IBAction)handleStepin:(id)sender;
+
 @end

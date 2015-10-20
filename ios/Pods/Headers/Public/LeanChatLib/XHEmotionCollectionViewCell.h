@@ -1,1 +1,0 @@
-../../../../../LeanChatLib/Classes/vendor/MessageDisplayKit/Classes/Views/MessageMenuViews/XHEmotionCollectionViewCell.h

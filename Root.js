@@ -1,13 +1,21 @@
 'use strict';
 
 var React = require('react-native');
+var cssVar = require('cssVar');
+
+var SignInView = require('./src/SignInView');
+var SignUpView = require('./src/SignUpView');
+
 var Hello = require('./Hello');
-var Activity = require('./Activity');
 var ModalExample = require('./ModalExample');
-var NextPage = require('./NextPage');
-var AddActivity = require('./AddActivity');
-var MyPage = require('./MyPage');
-var Icon = require('react-native-vector-icons/Ionicons');
+var Onboarding = require('./src/Onboarding');
+var config = require('./src/config');
+var MainTabPage = require('./src/MainTabPage');
+
+var api = require('./src/api');
+var Navbars = require('./src/Navbars');
+var {user} = api;
+
 var {
   RefresherListView,
   LoadingBarIndicator
@@ -16,6 +24,7 @@ var {
 
 var {
   AppRegistry,
+  AsyncStorage,
   StyleSheet,
   Text,
   Image,
@@ -33,293 +42,165 @@ var {
   TouchableHighlight,
   Navigator,
   TabBarIOS,
+  StatusBarIOS,
   NativeModules
 } = React;
 
-var SpringBoard = NativeModules.SpringBoard;
 var API_KEY = '7waqfqbprs7pajbz28mqf6vz';
 var API_URL = 'http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json';
 var PAGE_SIZE = 25;
 var PARAMS = '?apikey=' + API_KEY + '&page_limit=' + PAGE_SIZE;
 var REQUEST_URL = API_URL + PARAMS;
 
-var Button = React.createClass({
-    handlePress: function() {
-        this.props.onClick();
-    },
-    render: function() {
-        return (
-            <View style={style.container}>
-                <TouchableHighlight onPress={this.handlePress} underlayColor="#a9d9d4">
-                    <Text style={style.button}>{this.props.children}</Text>
-                </TouchableHighlight>
-            </View>
-        );
-    }
-});
-
-var base64Icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAQAAACSR7JhAAADtUlEQVR4Ac3YA2Bj6QLH0XPT1Fzbtm29tW3btm3bfLZtv7e2ObZnms7d8Uw098tuetPzrxv8wiISrtVudrG2JXQZ4VOv+qUfmqCGGl1mqLhoA52oZlb0mrjsnhKpgeUNEs91Z0pd1kvihA3ULGVHiQO2narKSHKkEMulm9VgUyE60s1aWoMQUbpZOWE+kaqs4eLEjdIlZTcFZB0ndc1+lhB1lZrIuk5P2aib1NBpZaL+JaOGIt0ls47SKzLC7CqrlGF6RZ09HGoNy1lYl2aRSWL5GuzqWU1KafRdoRp0iOQEiDzgZPnG6DbldcomadViflnl/cL93tOoVbsOLVM2jylvdWjXolWX1hmfZbGR/wjypDjFLSZIRov09BgYmtUqPQPlQrPapecLgTIy0jMgPKtTeob2zWtrGH3xvjUkPCtNg/tm1rjwrMa+mdUkPd3hWbH0jArPGiU9ufCsNNWFZ40wpwn+62/66R2RUtoso1OB34tnLOcy7YB1fUdc9e0q3yru8PGM773vXsuZ5YIZX+5xmHwHGVvlrGPN6ZSiP1smOsMMde40wKv2VmwPPVXNut4sVpUreZiLBHi0qln/VQeI/LTMYXpsJtFiclUN+5HVZazim+Ky+7sAvxWnvjXrJFneVtLWLyPJu9K3cXLWeOlbMTlrIelbMDlrLenrjEQOtIF+fuI9xRp9ZBFp6+b6WT8RrxEpdK64BuvHgDk+vUy+b5hYk6zfyfs051gRoNO1usU12WWRWL73/MMEy9pMi9qIrR4ZpV16Rrvduxazmy1FSvuFXRkqTnE7m2kdb5U8xGjLw/spRr1uTov4uOgQE+0N/DvFrG/Jt7i/FzwxbA9kDanhf2w+t4V97G8lrT7wc08aA2QNUkuTfW/KimT01wdlfK4yEw030VfT0RtZbzjeMprNq8m8tnSTASrTLti64oBNdpmMQm0eEwvfPwRbUBywG5TzjPCsdwk3IeAXjQblLCoXnDVeoAz6SfJNk5TTzytCNZk/POtTSV40NwOFWzw86wNJRpubpXsn60NJFlHeqlYRbslqZm2jnEZ3qcSKgm0kTli3zZVS7y/iivZTweYXJ26Y+RTbV1zh3hYkgyFGSTKPfRVbRqWWVReaxYeSLarYv1Qqsmh1s95S7G+eEWK0f3jYKTbV6bOwepjfhtafsvUsqrQvrGC8YhmnO9cSCk3yuY984F1vesdHYhWJ5FvASlacshUsajFt2mUM9pqzvKGcyNJW0arTKN1GGGzQlH0tXwLDgQTurS8eIQAAAABJRU5ErkJggg==';
-
-
 var Home = React.createClass({
-    render: function() {
-      return (
-          <Navigator
-          ref="navigator"
-        style={style.container}
-        initialRoute={{
-          index: 0,
-          name: 'Root',
-          component: Root,
-        }}
-        renderScene={this.renderScene}
-        configureScene={(route) => Navigator.SceneConfigs.HorizontalSwipeJump}/>
-
-      );
-    },
-    renderScene: function(route, navigator) {
-      var Component = route.component;
-      return <Component
-          navigator={navigator}
-          route={route}
-          name={route.name} />
-    },
-});
-
-var Root = React.createClass({
-  statics: {
-    title: '<TabBarIOS>',
-    description: 'Tab-based navigation.',
-  },
-
-  displayName: 'TabBarExample',
-
   getInitialState: function() {
     return {
-      selectedTab: 'blueTab',
-      notifCount: 0,
-      presses: 0,
-      dataSource: new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      }),
-      loaded: false,
-      tabIconSize: 34,
-      modalVisible: true,
+      status: 'loading',
+      navBar: Navbars.None
     };
   },
 
   componentDidMount: function() {
-    this.fetchData();
-  },
+    if (config.platform === 'ios') {
+      StatusBarIOS.setStyle('light-content');
+    }
 
-  fetchData: function() {
-    fetch("https://api.leancloud.cn/1.1/classes/Activity", {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-LC-Id': 'vGdoWipkgLukG49FCz6beS1D',
-                'X-LC-Key': '5LubapRJJIphAkmklcQw8zx2',
-            }
-        }).then(function(response) {
-            var data = JSON.parse(response._bodyInit);
+    var context = this.refs.navigator.navigationContext;
+    context.addListener('willfocus', this._ensureNavigationBar);
+    AsyncStorage.getItem('userstamp').then(function(userstamp) {
+        if (!userstamp) {
+          return 'onboarding';
+        }
 
-            var dataSource = this.state.dataSource.cloneWithRows(data.results);
-            //console.error(dataSource);
-            this.setState({
-                dataSource: dataSource,
-                loaded: true,
-            });
-            //console.error("123");
-        }.bind(this), function() {
-            console.error("fail");
+        return user.currentUser().then(function(user) {
+          return user ? 'playing' : 'signin'
+        }, function(e) {
+          return 'signin';
         });
+      }, function() {
+        return 'onboarding'; 
+      }).then(this._replaceRoute);
   },
 
-  renderLoadingView: function() {
-    return (
-      <View style={style.container}>
-        <Text>
-          Loading movies...
-        </Text>
-      </View>
-    );
+  componentWillUnmount: function() {
+    this._navigationSubscription.remove();
   },
 
-  gotoIM: function() {
-        console.log('goto IM');
-        SpringBoard.gotoIM(function() {
-            console.log('goto IM', 'done!');
-        });
+  _ensureNavigationBar: function(e) {
+    var route = e ? e.data.route : this.refs.navigator.navigationContext.currentRoute;
+    console.log('handle willfocus', route);
+    if(['onboarding'].indexOf(route.name) !== -1) {
+      this.setState({
+        navBar: Navbars.None
+      });
+    } else if (['signin'].indexOf(route.name) !== -1) {
+      this.setState({
+        navBar: Navbars.Transparent
+      });
+    } else {
+      this.setState({
+        navBar: Navbars.Normal
+      });
+    }
+  },
+
+  onStart: function() {
+    AsyncStorage.setItem('userstamp', "" + Date.now()).catch(function(e) {
+      console.trace(e);
+    });
+
+    user.currentUser().then(function(user) {
+      return user ? 'playing' : 'signin';
+    }, function () {
+      return 'signin'
+    }).then(this._replaceRoute);
+  },
+
+  _replaceRoute: function(status) {
+    var route;
+    if (status === 'signin') {
+        route = {
+          title: '登录',
+          name: 'signin'
+        };
+    } else if(status === 'onboarding'){
+        route = {
+          title: '功能介绍',
+          name: 'onboarding'
+        };
+    } else {
+      route = {
+          title: '活动',
+          name: 'main'
+      };
+    }
+    this.refs.navigator.replace(route);
+  },
+
+    render: function() {
+      // if (this.state.status === 'loading') {
+      //   return null;
+      // }
+
+      // var route;
+      // if (this.state.status === "onboarding") {
+      //   route = {
+      //     title: '功能介绍',
+      //     name: 'onboarding'
+      //   }
+      // } else if (this.state.status === 'signin') {
+      //   route = {
+      //     title: '登录',
+      //     name: 'signin'
+      //   };
+      // } else {
+      //   route = {
+      //     title: '活动',
+      //     name: 'main'
+      //   };
+      // }
+
+      return (
+        <Navigator
+          ref="navigator"
+          navigationBar={this.state.navBar}
+          style={style.container}
+          initialRoute={{title: '', name: 'empty'}}
+          renderScene={this.renderScene}/>
+      );
     },
 
-  _renderContent: function(color: string, pageText: string, num?: number) {
-    return (
-      <View style={[style.rootContainer, {backgroundColor: color}]}>
-      {this.renderHeader(pageText)}
-        <Text style={style.text}>{pageText}</Text>
-        <Text style={style.text}>{num} re-renders of the {pageText}</Text>
-        <Button onClick={this.gotoIM}>IM</Button>
-      </View>
-    );
-  },
+    _changeNavigationBar: function(navBar) {
+      this.setState({navBar});
+    },
 
-  onTouch:function(data){
-    this.props.navigator.push({
-      name: 'NextPage',
-      index: 1,
-      id: data.id,
-      title: data.title,
-      content: data.content,
-      component: NextPage,
-    });
-  },
+    renderScene: function(route, navigator) {
+      var _interface = {
+        setNavigationBar: this._changeNavigationBar
+      };
 
-  doModal:function() {
-    this.props.navigator.push({
-      name: 'AddActivity',
-      index: 1,
-      id: 1,
-      component: AddActivity,
-    });
-  },
+      if (route.name === 'onboarding') {
+        return <Onboarding onStart={this.onStart} {..._interface}/>
+      }
 
-  renderMovie: function(data) {
-    return (
-      <TouchableHighlight onPress={() => {this.onTouch(data)}} underlayColor="#efefef">
-      <View style={styleListView.container}>
-        <View style={styleListView.rightContainer}>
-          <Text style={styleListView.title}>{data.title}</Text>
-          <Text style={styleListView.content}>{data.content}</Text>
-        </View>
-      </View>
-      </TouchableHighlight>
-    );
-  },
+      var routeCompMap = {
+        'empty': EmptyRoute,
+        'signin': SignInView,
+        'signup': SignUpView,
+        'main': MainTabPage,
+      };
 
-  onRefresh: function() {
-    // You can either return a promise or a callback
-    this.fetchData();
-  },
-
-  renderHeader: function(title) {
-    return (
-      <View style={style.headerContainer}>
-        <Text style={style.header}>{title}</Text>
-      </View>
-    )
-  },
-
-  render: function() {
-    // if (!this.state.loaded) {
-    //   return this.renderLoadingView();
-    // }
-    var modalBackgroundStyle = {
-      backgroundColor: this.state.transparent ? 'rgba(0, 0, 0, 0.5)' : '#f5fcff',
-    };
-    var innerContainerTransparentStyle = this.state.transparent
-      ? {backgroundColor: '#fff', padding: 20}
-      : null;
-    return (
-      <TabBarIOS
-        tintColor="#0087fa"
-        barTintColor="#efefef">
-        <Icon.TabBarItem
-          title="活动"
-          iconName="ios-flag-outline"
-          iconSize={this.state.tabIconSize}
-          selectedIconName="ios-flag"
-          selected={this.state.selectedTab === 'blueTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'blueTab',
-            });
-          }}>
-          {
-            // <View style={style.rootContainer}>
-            // {this.renderHeader('活动')}
-            // <RefresherListView
-            //   dataSource={this.state.dataSource}
-            //   renderRow={this.renderMovie}
-            //   onRefresh={this.onRefresh}
-            //   minTime={50}
-            //   style={style.listView}/>
-            // </View>
-            <Activity navigator={this.props.navigator}/>
-          }
-        </Icon.TabBarItem>
-
-        <Icon.TabBarItem
-          title="游记"
-          iconName="ios-bookmarks-outline"
-          iconSize={this.state.tabIconSize}
-          selectedIconName="ios-bookmarks"
-          selected={this.state.selectedTab === 'friendTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'friendTab',
-            });
-          }}>
-          {
-            <Hello navigator={this.props.navigator}/>
-          }
-        </Icon.TabBarItem>
-
-        <Icon.TabBarItem
-          title="添加"
-          iconName="ios-plus"
-          iconSize={this.state.tabIconSize}
-          selectedIconName="ios-plus"
-          selected={this.state.selectedTab === 'PlusTab'}
-          onPress={() => {
-            this.doModal()
-            // AlertIOS.alert(
-            //   'Foo Title',
-            //   null,
-            //   [
-            //     {text: 'Foo', onPress: () => console.log('Foo Pressed!')},
-            //     {text: 'Bar', onPress: () => console.log('Bar Pressed!')},
-            //     {text: 'Baz', onPress: () => console.log('Baz Pressed!')},
-            //   ]
-            // )
-          }} >
-          {
-            // <ModalExample navigator={this.props.navigator}/>
-          }
-        </Icon.TabBarItem>
-        <Icon.TabBarItem
-          title="朋友"
-          iconName="ios-chatboxes-outline"
-          iconSize={this.state.tabIconSize}
-          selectedIconName="ios-chatboxes"
-          badge={this.state.notifCount > 0 ? this.state.notifCount : undefined}
-          selected={this.state.selectedTab === 'redTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'redTab',
-              notifCount: this.state.notifCount + 1,
-            });
-          }}>
-          {this._renderContent('white', 'Red Tab', this.state.notifCount)}
-        </Icon.TabBarItem>
-        
-        <Icon.TabBarItem
-          title="我的"
-          iconName="ios-person-outline"
-          iconSize={this.state.tabIconSize}
-          selectedIconName="ios-person"
-          selected={this.state.selectedTab === 'MyTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'MyTab',
-            });
-          }}>
-          {
-            <MyPage navigator={this.props.navigator}/>
-          }
-        </Icon.TabBarItem>
-      </TabBarIOS>
-    );
-  },
+      var Component = routeCompMap[route.name];
+      return <Component navigator={navigator} style={styles.scene} {..._interface}/>
+    }
 });
+
+var EmptyRoute = React.createClass({
+  render: function() {
+    return <View></View>;
+  }
+});
+
 
 var style = require("./style");
 
@@ -345,7 +226,39 @@ var styles = StyleSheet.create({
     fontWeight: '500',
     margin: 10,
   },
+
+  navBarTrasnparent: {
+    backgroundColor: 'transparent'
+  },
+
+  navBar: {
+    backgroundColor: '#0087fa'
+  },
+
+  navBarText: {
+    fontSize: 16,
+    marginVertical: 10,
+  },
+  navBarTitleText: {
+    color: '#fff',
+    height: 16,
+    marginVertical: 14,
+  },
+  navBarLeftButton: {
+    marginLeft: 10,
+    marginVertical: 14,
+    width: 17,
+    height: 16
+  },
+  navBarRightButton: {
+    paddingRight: 10,
+  },
+  navBarButtonText: {
+    color: '#fff'
+  },
+  scene: {
+    paddingTop: 64
+  }
 });
 
-
-AppRegistry.registerComponent('AwesomeProject', () => Home);
+module.exports = Home;
