@@ -6,7 +6,6 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "avoscloud-sdk": "file:../../../../../var/folders/v1/qqnn80fn3mx0jmx301mndmsc0000gq/T/npm-27559-f0a7ea6d/git-cache-b6a70bd3d55c/106aaf1a79ff8d3379d477cbeb8ee6a51f818d91",
     "color": "^0.10.1",
     "immutable": "^3.7.5",
     "moment": "^2.10.6",
