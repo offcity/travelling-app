@@ -6,7 +6,6 @@ var cssVar = require('cssVar');
 var SignInView = require('./src/SignInView');
 var SignUpView = require('./src/SignUpView');
 
-var Hello = require('./Hello');
 var ModalExample = require('./ModalExample');
 var Onboarding = require('./src/Onboarding');
 var config = require('./src/config');

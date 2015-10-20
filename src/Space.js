@@ -18,6 +18,8 @@ var {
 var deviceWidth = Dimensions.get('window').width;
 var deviceHeight = Dimensions.get('window').height;
 
+console.log('device height', deviceHeight);
+
 var su = require('./styleUtils');
 var api = require('./api');
 var user = api.user
@@ -99,6 +101,18 @@ var Space = React.createClass({
   }
 });
 
+function avatarStyle() {
+  var size = deviceHeight <= 568 ? 48 : 64;
+  var border = deviceHeight <= 568 ? 2 : 3
+  return {
+    ...su.size(size),
+    borderRadius: size / 2,
+    marginTop: -size / 2,
+    borderWidth: border,
+    borderColor: '#fff'
+  };
+}
+
 var styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -107,7 +121,7 @@ var styles = StyleSheet.create({
 
   banner: {
     width: deviceWidth,
-    height: 180
+    height: deviceHeight <= 568 ? 125 : 180
   },
 
   links: {
@@ -128,20 +142,14 @@ var styles = StyleSheet.create({
 
   user: {
     alignItems: 'center',
-    marginBottom: 25,
+    marginBottom: deviceHeight <= 568 ? 15: 25,
   },
 
-  avatar: {
-    ...su.size(64),
-    borderRadius: 32,
-    marginTop: -32,
-    borderWidth: 3,
-    borderColor: '#fff'
-  },
+  avatar: avatarStyle(),
 
   username: {
     fontSize: 17,
-    marginVertical: 8,
+    marginVertical: 5,
   },
 
   levels: {
